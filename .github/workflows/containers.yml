@@ -28,7 +28,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: steal environment variables
-              run: echo "IMAGE_NAME=$(echo ${{ matrix.dockerfile }} | cut -d . -f 1 | cut -d '/' -f 2)" >> $GITHUB_ENV
+              run: echo "IMAGE_NAME=$(echo ${{ matrix.dockerfile }} | cut -d . -f 1 | cut -d '/' -f 1)" >> $GITHUB_ENV
 
             # Build metadata
             - name: apply image metadata
