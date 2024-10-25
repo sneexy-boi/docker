@@ -1,0 +1,32 @@
+image: alpine/latest
+packages:
+- git
+- make
+- docker
+secrets:
+- 08152588-9c5f-415f-bf14-e8aa87fb294c
+sources:
+- https://git.sr.ht/~poldi1405/dockerfiles#soju
+- https://git.sr.ht/~emersion/soju
+tasks:
+- start-docker: |
+    sudo addgroup $(whoami) docker
+    sudo service docker start
+
+    set +e
+    docker_ps_return=1
+    until [ ${docker_ps_return} -eq 0 ]; do
+      sudo docker ps >/dev/null 2>&1
+      docker_ps_return=$?
+      sleep 1
+    done
+    set -e
+- needs-rebuild: |
+    cd soju
+    if docker image pull mpldr/soju:$(git describe --always --tags); then complete-build; fi
+- build-container: |
+    cp -r soju dockerfiles
+    cd dockerfiles
+    make container
+    make push
+

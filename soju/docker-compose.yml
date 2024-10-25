@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  soju:
+    #build: .
+    image: mpldr/soju:latest
+    command:
+      - -debug
+    ports:
+      - "6697:6697"
+    volumes:
+      - ./soju-data:/data
